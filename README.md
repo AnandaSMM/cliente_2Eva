@@ -21,17 +21,21 @@ Además, contará con una funcionalidad similar a Google Maps, proporcionando un
 - Express
   
 ## Entidades
-- Usuarios
-- Grupos
+- Usuarios (key, nombre, correo, contraseña, sitios propios )
+- Grupos (key, participantes, sitios compartidos ) 
 
 ## Roles
 - Usuario: Puede ver el mapa personalizado y el general.
 
 ## Pantallas
-- Inicio (Mostrar juguetes, posibilidad de filtrar por categoría y precio)
+- Inicio (Mapa customeable y mapa general)
+- login
+- registro
+- Configuracón de usuario (cambiar avatar)
   
 ## imagen guia
 https://learn.microsoft.com/es-es/azure/architecture/data-guide/big-data/images/document.png
+
 
 ## Integrantes
 - Erick Lema 
