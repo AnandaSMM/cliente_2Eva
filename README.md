@@ -1,3 +1,8 @@
+# Comandos Terminal
+npm install
+Instalar la carpeta node_modules
+npm install express
+
 # Descripción
 Nuestro proyecto es una plataforma dinámica e intuitiva donde puedas descubrir, guardar y compartir tus sitios favoritos en un mapa interactivo. Este proyecto, impulsado por llamadas AJAX, permitirá a los usuarios registrar lugares especiales, añadirles fotografías y dejar comentarios para describir sus experiencias.
 
@@ -21,17 +26,21 @@ Además, contará con una funcionalidad similar a Google Maps, proporcionando un
 - Express
   
 ## Entidades
-- Usuarios
-- Grupos
+- Usuarios (key, nombre, correo, contraseña, sitios propios )
+- Grupos (key, participantes, sitios compartidos ) 
 
 ## Roles
 - Usuario: Puede ver el mapa personalizado y el general.
 
 ## Pantallas
-- Inicio (Mostrar juguetes, posibilidad de filtrar por categoría y precio)
+- Inicio (Mapa customeable y mapa general)
+- login
+- registro
+- Configuracón de usuario (cambiar avatar)
   
 ## imagen guia
 https://learn.microsoft.com/es-es/azure/architecture/data-guide/big-data/images/document.png
+
 
 ## Integrantes
 - Erick Lema 

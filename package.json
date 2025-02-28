@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "express": "^4.21.2",
+    "firebase": "^11.3.1",
+    "firebase-admin": "^13.1.0"
+  },
+  "name": "cliente_2eva",
+  "version": "1.0.0",
+  "description": "Nuestro proyecto es una plataforma dinámica e intuitiva donde puedas descubrir, guardar y compartir tus sitios favoritos en un mapa interactivo. Este proyecto, impulsado por llamadas AJAX, permitirá a los usuarios registrar lugares especiales, añadirles fotografías y dejar comentarios para describir sus experiencias.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnandaSMM/cliente_2Eva.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AnandaSMM/cliente_2Eva/issues"
+  },
+  "homepage": "https://github.com/AnandaSMM/cliente_2Eva#readme"
+}
