@@ -1,9 +1,8 @@
 # Comandos Terminal
 npm install
 Instalar la carpeta node_modules
-npm install dotenv
 npm install firebase
-npm install express
+//*
 
 # Descripción
 Nuestro proyecto es una plataforma dinámica e intuitiva donde puedas descubrir, guardar y compartir tus sitios favoritos en un mapa interactivo. Este proyecto, impulsado por llamadas AJAX, permitirá a los usuarios registrar lugares especiales, añadirles fotografías y dejar comentarios para describir sus experiencias.

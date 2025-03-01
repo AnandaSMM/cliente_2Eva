@@ -1,7 +1,6 @@
 // Importar Firebase y sus servicios necesarios
-import { auth, db } from "/firebase.js";
+import { auth } from "/firebase.js";
 import { createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 document.getElementById("formRegistro").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -25,17 +24,17 @@ document.getElementById("formRegistro").addEventListener("submit", async (e) => 
         const user = userCredential.user;
 
         // Actualizar perfil con el nombre del usuario
-        await updateProfile(user, {
-            displayName: name
-        });
+        // await updateProfile(user, {
+        //     displayName: name
+        // });
         
         console.log("Usuario registrado:", user);
         message.style.color = "green";
         message.textContent = "Registro exitoso. Redirigiendo...";
 
-        // Redirigir al dashboard después de unos segundos
+        // Redirigir al mapa después de unos segundos
         setTimeout(() => {
-            window.location.href = "/dashboard";
+            window.location.href = "/mapa";
         }, 2000);
 
     } catch (error) {

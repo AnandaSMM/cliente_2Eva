@@ -1,3 +1,16 @@
+import { auth } from "/firebase.js";
+import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+// Verificar autenticación en Firebase
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        document.cookie = "sessionToken=; path=/; max-age=0;"; // Borrar cookie
+        window.location.href = "login.html"; // Redirigir al login
+    } else {
+        document.getElementById("user-email").textContent = user.email;
+    }
+});
+
 // Crear el mapa centrado en Madrid
 const map = L.map('map').setView([40.4168, -3.7038], 13); 
 
@@ -50,3 +63,15 @@ fetch(overpassUrl)
         console.error("Error al obtener datos:", error);
         alert("Hubo un problema al obtener los datos. Inténtalo más tarde.");
     });
+
+
+// Cerrar sesión
+document.getElementById("logout").addEventListener("click", async () => {
+    try {
+        await signOut(auth);
+        document.cookie = "sessionToken=; path=/; max-age=0;"; // Borrar cookie
+        window.location.href = "login.html"; // Redirigir al login
+    } catch (error) {
+        console.error("Error al cerrar sesión:", error);
+    }
+});

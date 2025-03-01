@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa de Madrid - Lugares Turísticos y Restaurantes</title>
+    <title>Mapa de Madrid</title>
 
     <!-- Script de Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -22,11 +22,19 @@
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>Bienvenido al Mapa</h1>
+        <p>Sesión iniciada como: <span id="user-email">Cargando...</span></p>
+        <button id="logout">Cerrar Sesión</button>
 
-    <h2>Mapa de Madrid - Lugares Turísticos y Restaurantes</h2>
-    <div id="map"></div>
+        <!-- Mapa de Madrid -->
+        <h2>Mapa de Madrid - Lugares Turísticos y Restaurantes</h2>
+        <div id="map"></div>
+    </div>
 
-    <script src="js/mapa.js"></script>
-
+    <!-- Incluir Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+    <script type="module" src="js/mapa.js"></script>
 </body>
 </html>
