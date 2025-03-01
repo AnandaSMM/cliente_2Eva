@@ -1,6 +1,8 @@
 # Comandos Terminal
 npm install
 Instalar la carpeta node_modules
+npm install dotenv
+npm install firebase
 npm install express
 
 # Descripción

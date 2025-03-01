@@ -1,20 +1,10 @@
-const admin = require("firebase-admin");
-const { initializeApp } = require("firebase/app");
-const { getFirestore } = require("firebase/firestore");
-const { getAuth } = require("firebase/auth");
+// Importar Firebase desde el CDN
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
-// Credenciales desde un archivo JSON
-const serviceAccount = require("./firebase-service-account.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://eva2-practica.firebaseio.com",
-});
-
-const db = admin.firestore();
-const auth = admin.auth();
-
-// Configuración del SDK de Firebase para cliente
+// Configuración de Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBzfYf1ftohMkokGJ__1T_50ViCOVX9PT0",
   authDomain: "eva2-practica.firebaseapp.com",
@@ -25,9 +15,11 @@ const firebaseConfig = {
   measurementId: "G-DNNMV0EYYR",
 };
 
-// Inicializa Firebase en el lado del cliente
-const firebaseApp = initializeApp(firebaseConfig);
-const clientDb = getFirestore(firebaseApp);
-const clientAuth = getAuth(firebaseApp);
+// Inicializar Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
-module.exports = { db, auth, clientDb, clientAuth };
+// Exportar Firebase para usarlo en otros archivos frontend
+export { auth, db, storage };
