@@ -11,8 +11,8 @@ Nuestro proyecto es una plataforma dinámica e intuitiva donde puedas descubrir,
 Además, contará con una funcionalidad similar a Google Maps, proporcionando una navegación fluida y precisa. Cada usuario podrá crear su propio catálogo de sitios preferidos y compartirlos con sus amigos, facilitando la exploración de nuevos destinos de una manera visual y atractiva.
 
 ## Funcionalidades
-- Iniciar sesión []
-- Registrarse []
+- Iniciar sesión [✔️]
+- Registrarse [✔️]
 - CRUD []
 - Notificaciones []
 - Cookies []
