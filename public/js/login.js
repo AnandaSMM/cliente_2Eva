@@ -9,7 +9,7 @@ function setSessionCookie(name, value, days) {
         date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
         cookieString += `; expires=${date.toUTCString()}`;
     } else {
-        cookieString += `; max-age=0`; // La cookie dura hasta que se cierra el navegador
+        cookieString += `; max-age=0`; // La cookie debería durar hasta que se cierra el navegador
     }
     document.cookie = cookieString;
 }
@@ -28,7 +28,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
         const user = userCredential.user;
         console.log("Usuario autenticado:", user);
 
-        // Guardar UID en una cookie (7 días si mantenerSesion está activado, sino se elimina al cerrar el navegador)
+        // Guardar UID en una cookie (7 días si mantener sesión está activado, sino se elimina al cerrar el navegador)
         setSessionCookie("sessionToken", user.uid, mantenerSesion ? 7 : null);
 
         // Redirigir al mapa
