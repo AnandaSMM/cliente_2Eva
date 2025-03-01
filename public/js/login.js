@@ -11,7 +11,6 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         console.log("Usuario autenticado:", userCredential.user);
-        alert("Inicio de sesión exitoso");
 
         // Redirigir al dashboard
         window.location.href = "/dashboard";

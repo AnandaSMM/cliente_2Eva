@@ -9,7 +9,15 @@ document.getElementById("formRegistro").addEventListener("submit", async (e) => 
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
     const message = document.getElementById("message");
+
+    // Validar que las contraseñas coincidan
+    if (password !== confirmPassword) {
+        message.style.color = "red";
+        message.textContent = "Las contraseñas no coinciden.";
+        return;
+    }
 
     try {
         // Crear usuario en Firebase Authentication
@@ -20,7 +28,7 @@ document.getElementById("formRegistro").addEventListener("submit", async (e) => 
         await updateProfile(user, {
             displayName: name
         });
-
+        
         console.log("Usuario registrado:", user);
         message.style.color = "green";
         message.textContent = "Registro exitoso. Redirigiendo...";
@@ -33,6 +41,6 @@ document.getElementById("formRegistro").addEventListener("submit", async (e) => 
     } catch (error) {
         console.error("Error en el registro:", error.message);
         message.style.color = "red";
-        message.textContent = "Error: " + error.message;
+        message.textContent = error.message;
     }
 });

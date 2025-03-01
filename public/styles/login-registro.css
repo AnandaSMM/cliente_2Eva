@@ -4,33 +4,33 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f4f4f4;
+    background-color: #bbb;
 }
 
 .container {
     background: white;
     padding: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    border-radius: 1em;
     text-align: center;
-    width: 300px;
+    width: 22em;
 }
 
 input {
-    width: 100%;
+    width: 22em;
     padding: 10px;
-    margin: 10px 0;
+    margin: 0.5em 0;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 0.5em;
 }
 
 button {
-    width: 100%;
-    padding: 10px;
+    width: 7em;
+    padding: 0.8em;
     background: blue;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 0.5em;
     cursor: pointer;
 }
 
