@@ -1,13 +1,33 @@
-import { auth } from "/firebase.js";
+import { auth, db} from "/firebase.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 // Verificar autenticación en Firebase
-onAuthStateChanged(auth, (user) => {
-    if (!user) {
-        document.cookie = "sessionToken=; path=/; max-age=0;"; // Borrar cookie
-        window.location.href = "login.html"; // Redirigir al login
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        const userId = user.uid;
+        try {
+            // Referencia al documento del usuario en Firestore
+            const userDocRef = doc(db, "Usuario", userId);
+            
+            // Obtener el documento
+            const userDocSnap = await getDoc(userDocRef);
+
+            if (userDocSnap.exists()) {
+                const userData = userDocSnap.data(); // Obtener los datos
+                console.log("Nombre del usuario:", userData.nombre);
+
+                document.getElementById("nombreUsuario").textContent = userData.nombre;
+            } else {
+                console.log("No se encontró el documento del usuario en Firestore");
+            }
+        } catch (error) {
+            console.error("Error al obtener los datos del usuario:", error);
+        }
     } else {
-        document.getElementById("user-email").textContent = user.email;
+        // Borrar la cookie de sesión y redirigir al login
+        document.cookie = "sessionToken=; path=/; max-age=0;";
+        window.location.href = "login.html";
     }
 });
 
