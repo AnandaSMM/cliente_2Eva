@@ -14,7 +14,6 @@ function setSessionCookie(name, value, days) {
     document.cookie = cookieString;
 }
 
-
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -26,7 +25,6 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        console.log("Usuario autenticado:", user);
 
         // Guardar UID en una cookie (7 días si mantener sesión está activado, sino se elimina al cerrar el navegador)
         setSessionCookie("sessionToken", user.uid, mantenerSesion ? 7 : null);

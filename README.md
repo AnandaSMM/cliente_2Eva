@@ -27,7 +27,7 @@ Además, contará con una funcionalidad similar a Google Maps, proporcionando un
 - Express
   
 ## Entidades
-- Usuarios (key, nombre, correo, contraseña, sitios propios )
+- Usuarios (key, nombre, sitios propios )
 - Grupos (key, participantes, sitios compartidos ) 
 
 ## Roles

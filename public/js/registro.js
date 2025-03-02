@@ -1,12 +1,13 @@
 // Importar Firebase y sus servicios necesarios
-import { auth } from "/firebase.js";
-import { createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { auth, db } from "/firebase.js";
+import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { setDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 document.getElementById("formRegistro").addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
     const message = document.getElementById("message");
@@ -23,12 +24,14 @@ document.getElementById("formRegistro").addEventListener("submit", async (e) => 
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // Actualizar perfil con el nombre del usuario
-        // await updateProfile(user, {
-        //     displayName: name
-        // });
-        
-        console.log("Usuario registrado:", user);
+        // Crear documento en Firestore dentro de la colección "Usuario"
+        await setDoc(doc(db, "Usuario", user.uid), {
+            nombre: name,
+            email: email,
+            sitiosPropios: [],
+            grupos: []
+        });
+
         message.style.color = "green";
         message.textContent = "Registro exitoso. Redirigiendo...";
 

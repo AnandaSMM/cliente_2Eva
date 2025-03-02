@@ -13,7 +13,7 @@ app.get("/firebase.js", (req, res) => {
     res.sendFile(path.join(__dirname, "firebase.js"));
 });
 
-// Middleware para verificar sesión
+// Verificar sesión con cookie UID
 app.get("/", (req, res) => {
     if (req.cookies.sessionToken) {
         res.redirect("/mapa");
