@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Madrid</title>
+
+    <!-- Script de Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Script de Cluster, es para agrupar marcadores -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="./styles/mapaStylesheet.css" />
+
+</head>
+
+<body>
+    <div class="container">
+        <div id="encabezado">
+
+            <h2>Mapa de Madrid - Lugares Turísticos y Restaurantes</h2>
+            <h3>Hola <span id="nombreUsuario">Cargando...</span></h3>
+            <button id="personal" class="boton">Tú mapa</button>
+            <button id="general" class="boton">Mapa general</button>
+
+        </div>
+        <div id="contenido">
+            <div id="map"></div>
+            <aside>
+                <button id="personal" class="boton">crear Grupo</button>
+                <button id="agregarGrupo" class="boton">Agregar miembro</button>
+                <button id="crearSpot" class="boton">Agregar lugar</button>
+                <!-- formulario para crear sitio -->
+                <form method="post" id="formularioNuevoSitio">
+                    <input type="text" id="nombre" placeholder="Nombre del sitio">
+                    <input type="text" id="Comentario" placeholder="Comentario">
+                    <select id="tipo">
+                        <option enabled>Tipo</option>
+                        <option>Restauración</option>
+                        <option>Ocio</option>
+                    </select>
+                    <input type="submit" value="Crear">
+                </form>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Incluir Firebase -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+    <script type="module" src="js/mapa.js"></script>
+</body>
+<footer>
+    <button id="logout">Cerrar Sesión</button>
+</footer>
+
+</html>

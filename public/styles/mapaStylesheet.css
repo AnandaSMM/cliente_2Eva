@@ -1,0 +1,58 @@
+body{
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+#container {
+  display: flex;
+}
+
+#encabezado {
+  width: 100%;
+  height: fit-content;
+  text-align: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #badae2;
+  border-radius: 25px;
+}
+
+#contenido {
+  display: flex; /* Permite que el mapa y el aside estén en línea */
+  gap :10px;
+}
+
+#map {
+  border-radius: 25px;
+  width: 65%;
+  height: 550px;
+}
+
+
+aside {
+  border: 1px solid #000000;
+  border-radius: 15px;
+  width: 35%;
+  height: 550px;
+  display: flex; /* Para aplicar justify-content */
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 10px;
+  background-image: url(/img/fondo3.jpg);
+  background-size: cover; /* Hace que la imagen cubra todo el div */
+  background-position: center; /* Centra la imagen */
+  background-repeat: no-repeat;
+}
+
+.boton{
+  color: #000000;
+  cursor: pointer;
+  padding: 7px 10px;
+  border-radius: 25px;
+  width: fit-content;
+  border: 1px solid #83cee1;
+}
+
+footer{
+  height: fit-content;
+  padding: 15px;
+}

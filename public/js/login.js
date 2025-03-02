@@ -30,7 +30,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
         setSessionCookie("sessionToken", user.uid, mantenerSesion ? 7 : null);
 
         // Redirigir al mapa
-        window.location.href = "mapa.html";
+        window.location.href = "index.html";
     } catch (error) {
         console.error("Error en el inicio de sesión:", error.message);
         errorMessage.textContent = error.message;

@@ -37,7 +37,7 @@ document.getElementById("formRegistro").addEventListener("submit", async (e) => 
 
         // Redirigir al mapa después de unos segundos
         setTimeout(() => {
-            window.location.href = "/mapa";
+            window.location.href = "/index";
         }, 2000);
 
     } catch (error) {
