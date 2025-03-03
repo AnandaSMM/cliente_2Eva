@@ -97,7 +97,6 @@ async function createGroup() {
     }
 }
 
-
 // Función para cargar los grupos del usuario autenticado
 async function loadGroups() {
     const user = auth.currentUser;
