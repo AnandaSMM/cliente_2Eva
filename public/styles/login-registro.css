@@ -29,17 +29,18 @@ input {
 }
 
 button {
-    width: 7em;
-    padding: 0.8em;
-    background: blue;
-    color: white;
-    border: none;
-    border-radius: 0.5em;
-    cursor: pointer;
+        background-color: rgba(207, 221, 227, 0.877);
+        color: #000000;
+        cursor: pointer;
+        padding: 10px 13px;
+        border-radius: 0.7em;
+        width: fit-content;
+        border: 1.5px solid #83cee1;
+
 }
 
 button:hover {
-    background: darkblue;
+    background: rgba(207, 221, 227, 1);
 }
 
 #message {
