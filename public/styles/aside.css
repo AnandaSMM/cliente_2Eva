@@ -1,0 +1,11 @@
+.seccion {
+    display: none; /* Ocultar todas las secciones inicialmente */
+}
+.activa {
+    display: block; /* Mostrar solo la sección activa */
+}
+
+/* #seccionAmigos {
+    display: flex;
+    justify-content: space-between;
+} */

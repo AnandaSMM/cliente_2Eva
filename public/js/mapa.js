@@ -44,7 +44,7 @@ function solicitarPermisoNotificaciones() {
     function preguntar() {
         Notification.requestPermission().then((permiso) => {
             if (permiso === "granted") {
-                alert("✅ Notificaciones activadas.");
+                // alert("✅ Notificaciones activadas.");
             } else {
                 setTimeout(() => {
                     const aceptar = confirm("❗ Para mejorar tu experiencia, activa las notificaciones. ¿Quieres intentarlo de nuevo?");
@@ -175,7 +175,7 @@ document.getElementById("general").addEventListener("click", () => {
 });
 
 //agregar sitio del formulario
-document.getElementById("agregarSitioBtn").addEventListener("click", function () {
+document.getElementById("formularioNuevoSitio").addEventListener("click", function () {
     const nombre = document.getElementById("nombre").value;
     const latitud = parseFloat(document.getElementById("latitud").value);
     const longitud = parseFloat(document.getElementById("longitud").value);
@@ -197,8 +197,6 @@ document.getElementById("agregarSitioBtn").addEventListener("click", function ()
     .then(data => alert(data.mensaje))
     .catch(error => console.error("Error al agregar el sitio:", error));
 });
-
-
 
 // Cerrar sesión
 document.getElementById("logout").addEventListener("click", async () => {

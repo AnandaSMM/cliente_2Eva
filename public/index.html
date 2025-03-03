@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
     <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
     <link rel="stylesheet" href="./styles/mapaStylesheet.css" />
+    <link rel="stylesheet" href="./styles/aside.css" />
 
 </head>
 
@@ -31,14 +32,44 @@
             <div id="map"></div>
             <aside>
                 <div class="botones">
-                    <button id="personal" class="boton">crear Grupo</button>
-                    <button id="agregarGrupo" class="boton">Ver grupo</button>
                     <button id="crearSpot" class="boton">Crear spot</button>
+                    <button id="amigos" class="boton">Amigos</button>
+                    <button id="grupos" class="boton">Grupos</button>
+                    <!-- <button id="agregarGrupo" class="boton">Ver grupo</button> -->
                 </div>
+                <div id="seccionAmigos" class="seccion">
+                    <!-- Agregar amigos -->
+                    <div>
+                        <h2>Agregar Amigo</h2>
+                        <input type="text" id="friendName" placeholder="Nombre del amigo">
+                        <button id="addFriendButton">Agregar</button>
+                    </div>
+                    
+                    <!-- Lista de amigos -->
+                    <div>
+                        <h2>Mis Amigos</h2>
+                        <ul id="friendsList"></ul>
+                    </div>
+                    
+                </div>
+                <!-- Sección de Crear Spot -->
+                <div id="seccionSpot" class="seccion">
+                    <h2>Crear un Nuevo Spot</h2>
+                    <p>Aquí puedes agregar una nueva ubicación con fotos y notas.</p>
+                    <input type="text" placeholder="Nombre del spot">
+                    <button>Guardar Spot</button>
+                </div>
+
+                <!-- Sección de Grupos -->
+                <div id="seccionGrupos" class="seccion">
+                    <h2>Grupos</h2>
+                    <p>Aquí puedes gestionar tus grupos de amigos.</p>
+                </div>
+
                 <!-- formulario para crear sitio -->
                 <form method="post" id="formularioNuevoSitio">
                     <input type="text" id="nombre" placeholder="Nombre del sitio">
-                    <input type="text" id="Comentario" placeholder="Comentario">
+                    <input type="text" id="comentario" placeholder="Comentario">
                     <select id="tipo">
                         <option enabled>Tipo</option>
                         <option>Restauración</option>
@@ -54,10 +85,13 @@
     <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
     <script type="module" src="js/mapa.js"></script>
+    <script type="module" src="js/aside.js"></script>
+    <script type="module" src="js/amigos.js"></script>
+    <script type="module" src="js/grupos.js"></script>
 
 </body>
 <footer>
-    <button id="logout">Cerrar Sesión</button>
+    <button id="logout" class="boton">Cerrar Sesión</button>
 </footer>
 
 </html>

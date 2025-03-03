@@ -1,7 +1,7 @@
 // Importar Firebase y sus servicios necesarios
 import { auth, db } from "/firebase.js";
 import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { setDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { setDoc, doc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 document.getElementById("formRegistro").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -20,6 +20,16 @@ document.getElementById("formRegistro").addEventListener("submit", async (e) => 
     }
 
     try {
+        // Verificar si el nombre ya está en uso en la colección "Usuario"
+        const q = query(collection(db, "Usuario"), where("nombre", "==", name));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+            message.style.color = "red";
+            message.textContent = "El nombre ya está en uso. Por favor, elige otro.";
+            return;
+        }
+
         // Crear usuario en Firebase Authentication
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
@@ -29,7 +39,8 @@ document.getElementById("formRegistro").addEventListener("submit", async (e) => 
             nombre: name,
             email: email,
             sitiosPropios: [],
-            grupos: []
+            grupos: [],
+            amigos: []
         });
 
         message.style.color = "green";

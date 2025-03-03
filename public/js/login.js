@@ -33,6 +33,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
         window.location.href = "index.html";
     } catch (error) {
         console.error("Error en el inicio de sesión:", error.message);
+        errorMessage.style.color = "red";
         errorMessage.textContent = error.message;
     }
 });
