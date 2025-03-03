@@ -1,5 +1,9 @@
 body{
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  background-image: url(/img/fondo5.jpg);
+  background-size: cover; /* Hace que la imagen cubra todo el div */
+  background-position: center; /* Centra la imagen */
+  background-repeat: no-repeat;
 }
 
 #container {
@@ -7,52 +11,86 @@ body{
 }
 
 #encabezado {
-  width: 100%;
-  height: fit-content;
-  text-align: center;
+  width: 98.7%;
+  height: 130px;
+  text-align: left;
+  display: flex;
+  flex-wrap: wrap;
   margin-bottom: 15px;
   padding: 10px;
-  background-color: #badae2;
-  border-radius: 25px;
+  background-color: rgba(3, 42, 54, 0.556);
+  border-radius: 15px;
+  color:white;
+}
+#encabezado h2 {
+  width: 100%;
+}
+
+#encabezado h3{
+  width: fit-content;
+  margin-right: 20%;
 }
 
 #contenido {
   display: flex; /* Permite que el mapa y el aside estén en línea */
-  gap :10px;
+  justify-content: space-between;
 }
 
 #map {
+  box-shadow: 5px -5px 5px #858d96,
+  -5px 5px 5px #858d96;
   border-radius: 25px;
-  width: 65%;
+  width: 63%;
   height: 550px;
 }
 
-
 aside {
-  border: 1px solid #000000;
+  border: 1px solid #CAD8E6;
+  box-shadow: 5px -5px 5px #CAD8E6,
+  -5px 5px 5px #CAD8E6;
   border-radius: 15px;
-  width: 35%;
-  height: 550px;
+  width: 33%;
+  height: 530px;
   display: flex; /* Para aplicar justify-content */
   flex-direction: column;
-  justify-content: space-evenly;
-  padding: 10px;
-  background-image: url(/img/fondo3.jpg);
-  background-size: cover; /* Hace que la imagen cubra todo el div */
-  background-position: center; /* Centra la imagen */
-  background-repeat: no-repeat;
+  padding: 15px;
+  background-color: rgba(3, 23, 54, 0.556);
+  
+}
+
+.botonesMapa {
+  display: flex;
+  width: 10%;
+  justify-content: space-around;
+  align-items: center;
+  width: 30%;
+}
+.botones{
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+
 }
 
 .boton{
+  background-color: rgba(207, 221, 227, 0.877);
   color: #000000;
   cursor: pointer;
-  padding: 7px 10px;
+  padding: 10px 13px;
   border-radius: 25px;
   width: fit-content;
-  border: 1px solid #83cee1;
+  border: 1.5px solid #83cee1;
+  box-shadow: 1px -1px 5px #6e757d,
+  -1px 1px 5px #858d96;
+}
+
+#formularioNuevoSitio{
+  visibility: hidden;
 }
 
 footer{
   height: fit-content;
   padding: 15px;
+  display: flex;
+  justify-content: center;
 }

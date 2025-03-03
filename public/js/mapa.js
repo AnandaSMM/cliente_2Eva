@@ -1,6 +1,7 @@
 import { auth, db } from "/firebase.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
 // Verificar autenticación en Firebase
 onAuthStateChanged(auth, async (user) => {
     if (user) {
@@ -30,6 +31,44 @@ onAuthStateChanged(auth, async (user) => {
     }
 });
 
+
+//notificaciones
+function solicitarPermisoNotificaciones() {
+    // Verifica si el navegador soporta las notificaciones
+    if (!("Notification" in window)) {
+        alert("Tu navegador no soporta notificaciones.");
+        return;
+    }
+  
+    // Función para solicitar permiso de notificaciones
+    function preguntar() {
+        Notification.requestPermission().then((permiso) => {
+            if (permiso === "granted") {
+                alert("✅ Notificaciones activadas.");
+            } else {
+                setTimeout(() => {
+                    const aceptar = confirm("❗ Para mejorar tu experiencia, activa las notificaciones. ¿Quieres intentarlo de nuevo?");
+                    if (aceptar) {
+                        preguntar();
+                    }
+                }, 3000); // Vuelve a preguntar después de 3 segundos
+            }
+        });
+    }
+  
+    preguntar();
+  }
+  function mostrarNotificacion(mensaje, titulo) {
+    // Crea la notificación
+    const notificacion = new Notification(titulo, {
+        body: mensaje,
+        icon: "./img/icono.jpg", // (Opcional) Un ícono para la notificación
+        tag: "notificacion-1", // (Opcional) Una etiqueta única
+    });
+}
+
+// Llamar a la función cuando se cargue la página
+solicitarPermisoNotificaciones();
 let map =null;
 
 function cargarMapa1() {
@@ -81,7 +120,7 @@ function cargarMapa1() {
                 }
             });
             map.addLayer(markers); // Agregar el cluster al mapa
-            alert("Datos cargados correctamente.");
+            mostrarNotificacion("Datos cargados correctamente.","✅");
         })
         .catch(error => {
             console.error("Error al obtener datos:", error);
@@ -110,7 +149,7 @@ function cargarMapa2() {
             const data = doc.data();
             if (data.ubicaciones && Array.isArray(data.ubicaciones)) {
                 data.ubicaciones.forEach((ubicacion) => {
-                    agregarMarcador(ubicacion.lat, ubicacion.lng);
+                    agregarMarcador(ubicacion.latitud, ubicacion.longitud);
                 });
             }
         });
@@ -125,14 +164,41 @@ function cargarMapa2() {
     window.onload = cargarUbicaciones;
 
 }
+cargarMapa1();
 document.getElementById("personal").addEventListener("click", () => {
     cargarMapa2();
 });
 
 document.getElementById("general").addEventListener("click", () => {
-    alert("Los datos se cargaran en breve");
+    mostrarNotificacion("Los datos se cargaran en breve",". . .");
     cargarMapa1();
 });
+
+//agregar sitio del formulario
+document.getElementById("agregarSitioBtn").addEventListener("click", function () {
+    const nombre = document.getElementById("nombre").value;
+    const latitud = parseFloat(document.getElementById("latitud").value);
+    const longitud = parseFloat(document.getElementById("longitud").value);
+    const comentario = document.getElementById("comentario").value;
+
+    if (!nombre || isNaN(latitud) || isNaN(longitud)) {
+        alert("Por favor, introduce un nombre y coordenadas válidas.");
+        return;
+    }
+
+    const nuevoSitio = { nombre, latitud, longitud, comentario };
+
+    fetch("http://localhost:3000/agregar-sitio", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(nuevoSitio)
+    })
+    .then(response => response.json())
+    .then(data => alert(data.mensaje))
+    .catch(error => console.error("Error al agregar el sitio:", error));
+});
+
+
 
 // Cerrar sesión
 document.getElementById("logout").addEventListener("click", async () => {

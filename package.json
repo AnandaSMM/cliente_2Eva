@@ -1,27 +1,29 @@
 {
+  "name": "cliente_2eva",
+  "version": "1.0.0",
+  "description": "Nuestro proyecto es una plataforma dinámica e intuitiva donde puedas descubrir, guardar y compartir tus sitios favoritos en un mapa interactivo. Este proyecto, impulsado por llamadas AJAX, permitirá a los usuarios registrar lugares especiales, añadirles fotografías y dejar comentarios para describir sus experiencias.",
+  "keywords": [],
+  "homepage": "https://github.com/AnandaSMM/cliente_2Eva#readme",
+  "bugs": {
+    "url": "https://github.com/AnandaSMM/cliente_2Eva/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnandaSMM/cliente_2Eva.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon server.js"
+  },
   "dependencies": {
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "firebase": "^11.4.0",
     "firebase-admin": "^13.1.0"
-  },
-  "name": "cliente_2eva",
-  "version": "1.0.0",
-  "description": "Nuestro proyecto es una plataforma dinámica e intuitiva donde puedas descubrir, guardar y compartir tus sitios favoritos en un mapa interactivo. Este proyecto, impulsado por llamadas AJAX, permitirá a los usuarios registrar lugares especiales, añadirles fotografías y dejar comentarios para describir sus experiencias.",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AnandaSMM/cliente_2Eva.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/AnandaSMM/cliente_2Eva/issues"
-  },
-  "homepage": "https://github.com/AnandaSMM/cliente_2Eva#readme"
+  }
 }

@@ -20,19 +20,21 @@
 <body>
     <div class="container">
         <div id="encabezado">
-
-            <h2>Mapa de Madrid - Lugares Turísticos y Restaurantes</h2>
-            <h3>Hola <span id="nombreUsuario">Cargando...</span></h3>
-            <button id="personal" class="boton">Tú mapa</button>
-            <button id="general" class="boton">Mapa general</button>
-
+            <h2>Lugares Turísticos y Restaurantes</h2>
+            <h3 >Bienvenida <span id="nombreUsuario">Cargando...</span></h3>
+            <div class="botonesMapa">
+                <button id="personal" class="boton">Tú mapa</button>
+                <button id="general" class="boton">Mapa general</button>
+            </div>
         </div>
         <div id="contenido">
             <div id="map"></div>
             <aside>
-                <button id="personal" class="boton">crear Grupo</button>
-                <button id="agregarGrupo" class="boton">Agregar miembro</button>
-                <button id="crearSpot" class="boton">Agregar lugar</button>
+                <div class="botones">
+                    <button id="personal" class="boton">crear Grupo</button>
+                    <button id="agregarGrupo" class="boton">Ver grupo</button>
+                    <button id="crearSpot" class="boton">Crear spot</button>
+                </div>
                 <!-- formulario para crear sitio -->
                 <form method="post" id="formularioNuevoSitio">
                     <input type="text" id="nombre" placeholder="Nombre del sitio">
@@ -52,6 +54,7 @@
     <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
     <script type="module" src="js/mapa.js"></script>
+
 </body>
 <footer>
     <button id="logout">Cerrar Sesión</button>
