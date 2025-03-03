@@ -1,11 +1,12 @@
 import { auth, db } from "/firebase.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { doc, getDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+let userId;
 // Verificar autenticación en Firebase
 onAuthStateChanged(auth, async (user) => {
     if (user) {
-        const userId = user.uid;
+        userId = user.uid;
         try {
             // Referencia al documento del usuario en Firestore
             const userDocRef = doc(db, "Usuario", userId);
@@ -39,15 +40,14 @@ function solicitarPermisoNotificaciones() {
         alert("Tu navegador no soporta notificaciones.");
         return;
     }
-  
-    // Función para solicitar permiso de notificaciones
+    // Funcion para solicitar permiso de notificaciones
     function preguntar() {
         Notification.requestPermission().then((permiso) => {
             if (permiso === "granted") {
                 // alert("✅ Notificaciones activadas.");
             } else {
                 setTimeout(() => {
-                    const aceptar = confirm("❗ Para mejorar tu experiencia, activa las notificaciones. ¿Quieres intentarlo de nuevo?");
+                    const aceptar = confirm("❗Para mejorar tu experiencia, activa las notificaciones. ¿Quieres intentarlo de nuevo?");
                     if (aceptar) {
                         preguntar();
                     }
@@ -55,26 +55,26 @@ function solicitarPermisoNotificaciones() {
             }
         });
     }
-  
     preguntar();
-  }
-  function mostrarNotificacion(mensaje, titulo) {
-    // Crea la notificación
+}
+
+// Crea la notificaciones
+function mostrarNotificacion(mensaje, titulo) {
     const notificacion = new Notification(titulo, {
         body: mensaje,
-        icon: "./img/icono.jpg", // (Opcional) Un ícono para la notificación
-        tag: "notificacion-1", // (Opcional) Una etiqueta única
+        icon: "./img/icono.jpg",
+        tag: "notificacion-1",
     });
 }
 
-// Llamar a la función cuando se cargue la página
+// Llamar a la funcion cuando se cargue la página
 solicitarPermisoNotificaciones();
-let map =null;
+let map = null;
 
 function cargarMapa1() {
     if (map !== null) {
         map.remove();
-        document.getElementById('map').innerHTML = ""; 
+        document.getElementById('map').innerHTML = "";
     }
     // Crear el mapa centrado en Madrid
     map = L.map('map').setView([40.4168, -3.7038], 13);
@@ -87,7 +87,7 @@ function cargarMapa1() {
     // Crear un grupo de "clusters" para mejorar el rendimiento
     const markers = L.markerClusterGroup();
 
-    // Petición a Overpass API para obtener lugares turísticos y restaurantes
+    // Peticion a Overpass API para obtener lugares turísticos y restaurantes
     const overpassQuery = `
     [out:json][timeout:25];
     area[name="Madrid"]->.searchArea;
@@ -120,7 +120,7 @@ function cargarMapa1() {
                 }
             });
             map.addLayer(markers); // Agregar el cluster al mapa
-            mostrarNotificacion("Datos cargados correctamente.","✅");
+            mostrarNotificacion("Datos cargados correctamente.", "✅");
         })
         .catch(error => {
             console.error("Error al obtener datos:", error);
@@ -131,72 +131,135 @@ function cargarMapa1() {
 
 
 function cargarMapa2() {
-    if (map !== null) {
+    if (typeof map !== "undefined" && map !== null) {
         map.remove();
-        document.getElementById('map').innerHTML = ""; 
+        document.getElementById('map').innerHTML = "";
     }
+    
+    // Inicializar el mapa con Leaflet
     map = L.map('map').setView([40.4168, -3.7038], 13);
-    // Agregar una capa de mapa (usando OpenStreetMap)
+
+    // Agregar capa de OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-
     async function cargarUbicaciones() {
-        const querySnapshot = await getDocs(collection(db, "usuarios"));
+        try {
+            const querySnapshot = await getDocs(collection(db, "Usuario"));
 
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            if (data.ubicaciones && Array.isArray(data.ubicaciones)) {
-                data.ubicaciones.forEach((ubicacion) => {
-                    agregarMarcador(ubicacion.latitud, ubicacion.longitud);
-                });
-            }
-        });
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                console.log("Ubicaciones:", data.ubicaciones);
+
+                if (data.ubicaciones && Array.isArray(data.ubicaciones)) {
+                    data.ubicaciones.forEach((ubicacion) => {
+                        agregarMarcador(ubicacion.lat, ubicacion.lng);
+                    });
+                }
+            });
+        } catch (error) {
+            console.error("Error al cargar ubicaciones:", error);
+        }
     }
 
     // Función para agregar un marcador en el mapa
     function agregarMarcador(lat, lng) {
-        L.marker([lat, lng]).addTo(map);
+        L.marker([lat, lng])
+            .addTo(map)
+            .bindPopup("Ubicación guardada").openPopup();
     }
 
-    // Cargar las ubicaciones cuando la página se cargue
-    window.onload = cargarUbicaciones;
+    // Evento para capturar clics en el mapa
+    map.on("click", function (e) {
+        const { lat, lng } = e.latlng;
 
+        document.getElementById("seccionSpot").style.display = "block";
+        document.getElementById("seccionAmigos").style.display = "none";
+        document.getElementById("lat").value = lat;
+        document.getElementById("long").value = lng;
+    });
+
+    document.getElementById("ubicacionForm").addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const lat = parseFloat(document.getElementById("lat").value);
+        const lng = parseFloat(document.getElementById("long").value);
+        if (!userId) {
+            alert("Error: No se encontró el usuario.");
+            return;
+        }
+
+        const nombre = document.getElementById("nombre").value;
+        const comentario = document.getElementById("comentario").value;
+        const tipo = document.getElementById("tipo").value;
+        const paraGrupos = document.getElementById("paraGrupos").value;
+
+        // Buscar el ID real del grupo
+        let grupoId = null;
+        if (paraGrupos) {
+            const idGrupo = query(collection(db, "Grupo"), where("nombre", "==", paraGrupos));
+            const querySnapshot = await getDocs(idGrupo);
+
+            if (querySnapshot.empty) {
+                alert("No se encontró un grupo registrado con ese nombre.");
+                return;
+            }
+            grupoId = querySnapshot.docs[0];
+        }
+
+        if (!nombre || !tipo) {
+            alert("El nombre y el tipo no pueden estar vacíos");
+            return;
+        }
+
+        let ruta = paraGrupos 
+            ? "http://localhost:3000/api/agregar-Ubicacion-Grupo" 
+            : "http://localhost:3000/api/agregar-Ubicacion-Mia";
+
+        let bodyData = paraGrupos 
+            ? { grupo: grupoId, nombre, lat, lng, comentario, tipo } 
+            : { usuario: userId, nombre, lat, lng, comentario, tipo };
+
+        try {
+            const response = await fetch(ruta, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(bodyData)
+            });
+
+            const data = await response.json();
+            console.log(data.mensaje);
+
+            // Agregar marcador al mapa después de guardar
+            agregarMarcador(lat, lng);
+
+            // Resetear el formulario y ocultarlo
+            document.getElementById("ubicacionForm").reset();
+        } catch (error) {
+            console.error("Error al guardar ubicación:", error);
+            alert("Error al guardar la ubicación");
+        }
+    });
+
+    // Cargar ubicaciones cuando el DOM esté listo
+    cargarUbicaciones();
 }
-cargarMapa1();
+
+///mostrar los mapas: general y personal
+cargarMapa1();// cargar el general por defecto
+
 document.getElementById("personal").addEventListener("click", () => {
     cargarMapa2();
 });
 
 document.getElementById("general").addEventListener("click", () => {
-    mostrarNotificacion("Los datos se cargaran en breve",". . .");
+    mostrarNotificacion("Los datos se cargaran en breve", ". . .");
     cargarMapa1();
 });
 
-//agregar sitio del formulario
-document.getElementById("formularioNuevoSitio").addEventListener("click", function () {
-    const nombre = document.getElementById("nombre").value;
-    const latitud = parseFloat(document.getElementById("latitud").value);
-    const longitud = parseFloat(document.getElementById("longitud").value);
-    const comentario = document.getElementById("comentario").value;
-
-    if (!nombre || isNaN(latitud) || isNaN(longitud)) {
-        alert("Por favor, introduce un nombre y coordenadas válidas.");
-        return;
-    }
-
-    const nuevoSitio = { nombre, latitud, longitud, comentario };
-
-    fetch("http://localhost:3000/agregar-sitio", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(nuevoSitio)
-    })
-    .then(response => response.json())
-    .then(data => alert(data.mensaje))
-    .catch(error => console.error("Error al agregar el sitio:", error));
-});
 
 // Cerrar sesión
 document.getElementById("logout").addEventListener("click", async () => {

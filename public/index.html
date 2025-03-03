@@ -70,14 +70,21 @@
                 <!-- Sección de Crear Spot -->
                 <div id="seccionSpot" class="seccion">
                     <h2>Crear un Nuevo Spot</h2>
-                    <form method="post" id="formularioNuevoSitio">
+                    <form id="formularioNuevoSitio">
                         <input type="text" id="nombre" placeholder="Nombre del sitio">
                         <input type="text" id="comentario" placeholder="Comentario">
+                        <input type="hidden" id="lat"> 
+                        <input type="hidden" id="long"> 
                         <select id="tipo">
                             <option enabled>Tipo</option>
                             <option>Restauración</option>
                             <option>Ocio</option>
                         </select>
+                        <p>Agregar ubicación a uno de tus grupos</p>
+                        <select id="paraGrupos">
+                            <option enabled>Grupos</option>
+                        </select><br>
+                        Si no agrega a ningun grupo se agregara a tus favoritos
                         <input type="submit" value="Crear">
                     </form>
                 </div>
@@ -92,7 +99,6 @@
     <script type="module" src="js/aside.js"></script>
     <script type="module" src="js/amigos.js"></script>
     <script type="module" src="js/grupos.js"></script>
-
 </body>
 <footer>
     <button id="logout" class="boton">Cerrar Sesión</button>
