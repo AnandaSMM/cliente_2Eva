@@ -45,7 +45,7 @@ function solicitarPermisoNotificaciones() {
     function preguntar() {
         Notification.requestPermission().then((permiso) => {
             if (permiso === "granted") {
-                alert("✅ Notificaciones activadas.");
+                // alert("✅ Notificaciones activadas.");
             } else {
                 setTimeout(() => {
                     const aceptar = confirm("❗Para mejorar tu experiencia, activa las notificaciones. ¿Quieres intentarlo de nuevo?");

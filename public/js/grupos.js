@@ -3,12 +3,12 @@ import { collection, addDoc, updateDoc, doc, getDoc, query, where, getDocs, arra
 
 // Referencias a los elementos del DOM
 const groupNameInput = document.getElementById("groupName");
-const createGroupButton = document.getElementById("createGroupButton");
+const crearGrupoBoton = document.getElementById("crearGrupoBoton");
 const friendsList = document.getElementById("friendsListGrupos"); 
 const groupsList = document.getElementById("groupsList");
 
 // Función para obtener amigos del usuario autenticado
-async function loadFriends() {
+export async function cargarAmigos() {
     const user = auth.currentUser;
     if (!user) return;
 
@@ -31,7 +31,7 @@ async function loadFriends() {
 }
 
 // Función para crear un grupo
-async function createGroup() {
+async function crearGrupo() {
     const groupName = groupNameInput.value.trim();
     const user = auth.currentUser;
 
@@ -89,7 +89,7 @@ async function createGroup() {
 
         alert("Grupo creado exitosamente.");
         groupNameInput.value = "";
-        loadGroups(); // Recargar la lista de grupos
+        cargarGrupos(); // Recargar la lista de grupos
 
     } catch (error) {
         console.error("Error al crear el grupo:", error);
@@ -98,7 +98,7 @@ async function createGroup() {
 }
 
 // Función para cargar los grupos del usuario autenticado
-async function loadGroups() {
+async function cargarGrupos() {
     const user = auth.currentUser;
     if (!user) return;
 
@@ -122,10 +122,9 @@ async function loadGroups() {
 }
 
 // Eventos
-createGroupButton.addEventListener("click", createGroup);
+crearGrupoBoton.addEventListener("click", crearGrupo);
 auth.onAuthStateChanged((user) => {
     if (user) {
-        loadFriends();
-        loadGroups();
+        cargarGrupos();
     }
 });

@@ -74,7 +74,7 @@ async function addFriend() {
 }
 
 // Función para cargar amigos al iniciar sesión
-async function loadFriends() {
+async function cargarAmigos() {
     const user = auth.currentUser;
     if (!user) return;
 
@@ -103,6 +103,6 @@ addFriendButton.addEventListener("click", addFriend);
 // Cargar amigos cuando el usuario se autentica
 auth.onAuthStateChanged((user) => {
     if (user) {
-        loadFriends();
+        cargarAmigos();
     }
 });

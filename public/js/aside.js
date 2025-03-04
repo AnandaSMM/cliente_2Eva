@@ -1,3 +1,5 @@
+import { cargarAmigos } from "./grupos.js";
+
 export function mostrarSeccion(seccionId) {
     // Ocultar todas las secciones
     document.querySelectorAll('.seccion').forEach(seccion => {
@@ -11,6 +13,9 @@ export function mostrarSeccion(seccionId) {
 // Asignar eventos a los botones
 document.getElementById('crearSpot').addEventListener('click', () => mostrarSeccion('seccionSpot'));
 document.getElementById('amigos').addEventListener('click', () => mostrarSeccion('seccionAmigos'));
-document.getElementById('grupos').addEventListener('click', () => mostrarSeccion('seccionGrupos'));
+document.getElementById('grupos').addEventListener('click', () => {
+    mostrarSeccion('seccionGrupos'); 
+    cargarAmigos(); 
+});
 
 mostrarSeccion('seccionSpot');
