@@ -143,6 +143,24 @@ export async function cargarMapa2() {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
 
+    if (!navigator.geolocation) {
+        alert("❌ Tu navegador no soporta geolocalización");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+      
+          map.setView([lat, lng], 15); // Centrar mapa en la ubicación
+      
+          L.marker([lat, lng])
+            .addTo(map)
+            .bindPopup("📍 Estás aquí")
+            .openPopup();
+        });
+
     const user = auth.currentUser;
     if (!user) {
         alert("Debes estar autenticado para agregar ubicaciones.");
