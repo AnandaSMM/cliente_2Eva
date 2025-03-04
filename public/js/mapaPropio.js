@@ -70,7 +70,8 @@ import { doc, getDoc,} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-
           alert("Ubicación agregada con éxito!");
           L.marker([lat, lng])
             .addTo(map)
-            .bindPopup(`<b>${nombre}</b><br>${comentario}`)
+            .bindPopup(`<b>${nombre}</b><br>${comentario}<br>
+              <button onclick="eliminarUbicacion('${result.id}', ${lat}, ${lng})">🗑 Borrar</button>`)
             .openPopup();
         } else {
           alert("Error al agregar la ubicación.");
@@ -79,6 +80,7 @@ import { doc, getDoc,} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-
         console.error("Error al enviar datos: ", error);
       }
     });
+    
   } catch (error) {
     console.error("Error al cargar usuario:", error);
     alert("Error al cargar usuario.");
