@@ -1,5 +1,5 @@
 // Importar Firebase y sus servicios necesarios
-import { auth, db } from "/firebase.js";
+import { auth, db } from "./firebase.js";
 import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { setDoc, doc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 

@@ -1,4 +1,4 @@
-import { db, auth } from "/firebase.js";
+import { db, auth } from "./firebase.js";
 import { collection, addDoc, updateDoc, doc, getDoc, query, where, getDocs, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // Referencias a los elementos del DOM

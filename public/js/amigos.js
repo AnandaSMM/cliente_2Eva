@@ -1,4 +1,4 @@
-import { db, auth } from "/firebase.js";
+import { db, auth } from "./firebase.js";
 import { doc, getDoc, updateDoc, arrayUnion, query, collection, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // Referencias al formulario y lista de amigos

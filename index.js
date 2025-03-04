@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const admin = require("firebase-admin");
+const { db } = require("./firebaseAdmin"); // Importar Firestore y Auth
 
 const app = express();
 app.use(express.json());
