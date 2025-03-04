@@ -70,8 +70,10 @@ import { doc, getDoc,} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-
           alert("Ubicación agregada con éxito!");
           L.marker([lat, lng])
             .addTo(map)
-            .bindPopup(`<b>${nombre}</b><br>${comentario}<br>
-              <button onclick="eliminarUbicacion('${result.id}', ${lat}, ${lng})">🗑 Borrar</button>`)
+            .bindPopup(`<b id="nombre-${result.id}">${nombre}</b><br>
+            <span id="comentario-${result.id}">${comentario}</span><br>
+            <button onclick="editarUbicacion('${result.id}', ${lat}, ${lng})">✏ Editar</button>
+            <button onclick="eliminarUbicacion('${result.id}', ${lat}, ${lng})">🗑 Borrar</button>`)
             .openPopup();
         } else {
           alert("Error al agregar la ubicación.");
@@ -80,7 +82,59 @@ import { doc, getDoc,} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-
         console.error("Error al enviar datos: ", error);
       }
     });
+
+    // Eliminar ubicación
+    async function eliminarUbicacion(id, lat, lng) {
+      if (!confirm("¿Seguro que quieres eliminar esta ubicación?")) return;
     
+      try {
+        const response = await fetch(`http://localhost:3000/eliminar-Ubicacion/${id}`, {
+          method: "DELETE",
+        });
+    
+        const result = await response.json();
+        if (result.success) {
+          alert("Ubicación eliminada con éxito!");
+          map.eachLayer((layer) => {
+            if (layer instanceof L.Marker && layer.getLatLng().lat === lat && layer.getLatLng().lng === lng) {
+              map.removeLayer(layer);
+            }
+          });
+        } else {
+          alert("Error al eliminar la ubicación.");
+        }
+      } catch (error) {
+        console.error("Error al eliminar la ubicación: ", error);
+      }
+    }
+
+    // Editar ubicación
+    async function editarUbicacion(id, lat, lng) {
+      const nuevoNombre = prompt("Nuevo nombre del sitio:", document.getElementById(`nombre-${id}`).innerText);
+      const nuevoComentario = prompt("Nuevo comentario:", document.getElementById(`comentario-${id}`).innerText);
+      
+      if (!nuevoNombre || !nuevoComentario) return alert("No puedes dejar campos vacíos.");
+    
+      try {
+        const response = await fetch(`http://localhost:3000/editar-Ubicacion/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nombre: nuevoNombre, comentario: nuevoComentario }),
+        });
+    
+        const result = await response.json();
+        if (result.success) {
+          alert("Ubicación actualizada!");
+          document.getElementById(`nombre-${id}`).innerText = nuevoNombre;
+          document.getElementById(`comentario-${id}`).innerText = nuevoComentario;
+        } else {
+          alert("Error al actualizar la ubicación.");
+        }
+      } catch (error) {
+        console.error("Error al actualizar la ubicación: ", error);
+      }
+    }
+
   } catch (error) {
     console.error("Error al cargar usuario:", error);
     alert("Error al cargar usuario.");
