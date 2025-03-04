@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const { db } = require("./firebaseAdmin"); // Importar Firestore y Auth
-
+const admin =require("firebase-admin");
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -73,18 +73,17 @@ app.post("/agregar-Ubicacion", async (req, res) => {
 });
 
 // eliminar una ubicación de la coleccion
-app.delete("/delete-location/:usuario/:nombre", async (req, res) => {
+app.delete("/eliminar-Ubicacion/:usuario/:lat/:lng", async (req, res) => {
   try {
-    const { usuario, nombre } = req.params;
+    const { usuario, lat, lng } = req.params;
 
-    const locationRef = db.collection("Usuario").doc(usuario).collection("sitiosPropios").doc(nombre);
+    const locationRef = db.collection("Usuario").doc(usuario).collection("sitiosPropios").doc(lat, lng);
     const locationDoc = await locationRef.get();
 
     if (!locationDoc.exists) {
       return res.status(404).json({ error: "Ubicación no encontrada" });
     }
-    // Eliminar de la subcoleccion
-    await locationRef.delete();
+    
     // Eliminar del array sitiosPropios
     const userRef = db.collection("Usuario").doc(usuario);
     await userRef.update({

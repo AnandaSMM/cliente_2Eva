@@ -189,6 +189,7 @@ export async function cargarMapa2() {
             const tipo = document.getElementById("tipo").value;
             const paraGrupos = document.getElementById("paraGrupos").checked;
 
+            console.log(userId,lat,lng,nombre,tipo);
             if (!userId || isNaN(lat) || isNaN(lng) || !nombre || !tipo) {
                 alert("Datos inválidos. Verifica los campos.");
                 return;
@@ -231,8 +232,40 @@ export async function cargarMapa2() {
 
         // Eliminar ubicación
         async function eliminarUbicacion(id, lat, lng) {
-            if (!confirm("¿Seguro que quieres eliminar esta ubicación?")) return;
+            const usuario = auth.currentUser; // Reemplaza esto con la forma en que obtienes el usuario actual (ej. auth.currentUser.uid)
 
+            // Confirmación antes de eliminar
+            if (confirm("¿Estás seguro de que quieres eliminar esta ubicación?")) {
+              // Realizar la solicitud DELETE al backend
+              fetch(`http://localhost:3000/eliminar-Ubicacion/${usuario}/${lat}/${lng}`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data.success) {
+                    alert("Ubicación eliminada correctamente");
+          
+                    // Remover el marcador del mapa
+                    const marker = map.eachLayer(layer => {
+                      if (layer.getLatLng && layer.getLatLng().lat === lat && layer.getLatLng().lng === lng) {
+                        map.removeLayer(layer);  // Elimina el marcador de Leaflet
+                      }
+                    });
+                  } else {
+                    alert(`Error: ${data.error}`);
+                  }
+                })
+                .catch((error) => {
+                  console.error("Error al eliminar ubicación:", error);
+                  alert("Hubo un problema al eliminar la ubicación.");
+                });
+            }
+          }
+          
+        
+        /*
+        if (!confirm("¿Seguro que quieres eliminar esta ubicación?")) return;
             try {
                 const response = await fetch(`http://localhost:3000/eliminar-Ubicacion/${id}`, {
                     method: "DELETE",
@@ -251,8 +284,8 @@ export async function cargarMapa2() {
                 }
             } catch (error) {
                 console.error("Error al eliminar la ubicación: ", error);
-            }
-        }
+            }*/
+        
 
         // Editar ubicación
         async function editarUbicacion(id, lat, lng) {
