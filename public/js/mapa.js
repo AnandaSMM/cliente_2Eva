@@ -2,11 +2,13 @@ import { auth, db } from "./firebase.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { mostrarSeccion } from "./aside.js";
+import { cargarGruposSelect } from "./grupos.js";
 
 let userId;
 // Verificar autenticación en Firebase
 onAuthStateChanged(auth, async (user) => {
     if (user) {
+        cargarGruposSelect();
         userId = user.uid;
         try {
             // Referencia al documento del usuario en Firestore
@@ -131,6 +133,7 @@ function cargarMapa1() {
 };
 
 export async function cargarMapa2() {
+    cargarGruposSelect();
     if (map && map.remove) {
         map.remove();
     }
@@ -144,21 +147,21 @@ export async function cargarMapa2() {
     }).addTo(map);
 
     if (!navigator.geolocation) {
-        alert("❌ Tu navegador no soporta geolocalización");
+        alert("Tu navegador no soporta geolocalización");
         return;
     }
 
     navigator.geolocation.getCurrentPosition(
         (position) => {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-      
-          map.setView([lat, lng], 15); // Centrar mapa en la ubicación
-      
-          L.marker([lat, lng])
-            .addTo(map)
-            .bindPopup("📍 Estás aquí")
-            .openPopup();
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+
+            map.setView([lat, lng], 15); // Centrar mapa en la ubicación
+
+            L.marker([lat, lng])
+                .addTo(map)
+                .bindPopup("📍 Estás aquí")
+                .openPopup();
         });
 
     const user = auth.currentUser;
@@ -187,21 +190,18 @@ export async function cargarMapa2() {
             const nombre = document.getElementById("nombre").value;
             const comentario = document.getElementById("comentario").value;
             const tipo = document.getElementById("tipo").value;
-            const paraGrupos = document.getElementById("paraGrupos").checked;
+            const grupoId = document.getElementById("paraGrupos").value; // Obtener el grupo seleccionado
 
-            console.log(userId,lat,lng,nombre,tipo);
+            console.log(userId, lat, lng, nombre, tipo);
+
             if (!userId || isNaN(lat) || isNaN(lng) || !nombre || !tipo) {
                 alert("Datos inválidos. Verifica los campos.");
                 return;
             }
 
             let bodyData = { userId, nombre, lat, lng, comentario, tipo };
-            if (paraGrupos) {
-                const grupoId = document.getElementById("grupoId").value;
-                if (!grupoId) {
-                    alert("Selecciona un grupo válido.");
-                    return;
-                }
+
+            if (grupoId && grupoId !== "Selecciona un grupo") { // Validar si se seleccionó un grupo válido
                 bodyData.grupo = grupoId;
             }
 
@@ -236,34 +236,34 @@ export async function cargarMapa2() {
 
             // Confirmación antes de eliminar
             if (confirm("¿Estás seguro de que quieres eliminar esta ubicación?")) {
-              // Realizar la solicitud DELETE al backend
-              fetch(`http://localhost:3000/eliminar-Ubicacion/${usuario}/${lat}/${lng}`, {
-                method: "DELETE",
-                headers: { "Content-Type": "application/json" },
-              })
-                .then((response) => response.json())
-                .then((data) => {
-                  if (data.success) {
-                    alert("Ubicación eliminada correctamente");
-          
-                    // Remover el marcador del mapa
-                    const marker = map.eachLayer(layer => {
-                      if (layer.getLatLng && layer.getLatLng().lat === lat && layer.getLatLng().lng === lng) {
-                        map.removeLayer(layer);  // Elimina el marcador de Leaflet
-                      }
-                    });
-                  } else {
-                    alert(`Error: ${data.error}`);
-                  }
+                // Realizar la solicitud DELETE al backend
+                fetch(`http://localhost:3000/eliminar-Ubicacion/${usuario}/${lat}/${lng}`, {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" },
                 })
-                .catch((error) => {
-                  console.error("Error al eliminar ubicación:", error);
-                  alert("Hubo un problema al eliminar la ubicación.");
-                });
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            alert("Ubicación eliminada correctamente");
+
+                            // Remover el marcador del mapa
+                            const marker = map.eachLayer(layer => {
+                                if (layer.getLatLng && layer.getLatLng().lat === lat && layer.getLatLng().lng === lng) {
+                                    map.removeLayer(layer);  // Elimina el marcador de Leaflet
+                                }
+                            });
+                        } else {
+                            alert(`Error: ${data.error}`);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error al eliminar ubicación:", error);
+                        alert("Hubo un problema al eliminar la ubicación.");
+                    });
             }
-          }
-          
-        
+        }
+
+
         /*
         if (!confirm("¿Seguro que quieres eliminar esta ubicación?")) return;
             try {
@@ -285,7 +285,7 @@ export async function cargarMapa2() {
             } catch (error) {
                 console.error("Error al eliminar la ubicación: ", error);
             }*/
-        
+
 
         // Editar ubicación
         async function editarUbicacion(id, lat, lng) {

@@ -121,6 +121,35 @@ async function cargarGrupos() {
     }
 }
 
+export async function cargarGruposSelect() {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const selectGrupos = document.getElementById("paraGrupos");
+    selectGrupos.innerHTML = `<option value="">Selecciona un grupo</option>`; // Reset
+
+    try {
+        // Obtener datos del usuario autenticado
+        const userDoc = await getDoc(doc(db, "Usuario", user.uid));
+        if (userDoc.exists()) {
+            const userData = userDoc.data();
+
+            for (const groupId of userData.grupos) {
+                const groupDoc = await getDoc(doc(db, "Grupo", groupId));
+                if (groupDoc.exists()) {
+                    const groupData = groupDoc.data();
+                    const option = document.createElement("option");
+                    option.value = groupId; // ID del grupo
+                    option.textContent = groupData.nombre; // Nombre del grupo
+                    selectGrupos.appendChild(option);
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Error al cargar grupos:", error);
+    }
+}
+
 // Eventos
 crearGrupoBoton.addEventListener("click", crearGrupo);
 auth.onAuthStateChanged((user) => {
