@@ -15,8 +15,8 @@ Además, contará con una funcionalidad similar a Google Maps, proporcionando un
 - CRUD []
 - Notificaciones []
 - Cookies [✔️]
-- Llamadas AJAX con Fetch []
-- API REST []
+- Llamadas AJAX con Fetch [✔️]
+- API REST [✔️]
 
 ## Tecnologías
 - Javascript
@@ -27,8 +27,8 @@ Además, contará con una funcionalidad similar a Google Maps, proporcionando un
 - Express
   
 ## Entidades
-- Usuarios (key, nombre, sitios propios )
-- Grupos (key, participantes, sitios compartidos ) 
+- Usuarios (amigos, email, grupos, nombre, sitios propios )
+- Grupos (nombre, participantes, sitios compartidos ) 
 
 ## Roles
 - Usuario: Puede ver el mapa personalizado y el general.
