@@ -1,4 +1,4 @@
-function mostrarSeccion(seccionId) {
+export function mostrarSeccion(seccionId) {
     // Ocultar todas las secciones
     document.querySelectorAll('.seccion').forEach(seccion => {
         seccion.classList.remove('activa');
@@ -13,4 +13,4 @@ document.getElementById('crearSpot').addEventListener('click', () => mostrarSecc
 document.getElementById('amigos').addEventListener('click', () => mostrarSeccion('seccionAmigos'));
 document.getElementById('grupos').addEventListener('click', () => mostrarSeccion('seccionGrupos'));
 
-mostrarSeccion('seccionAmigos');
+mostrarSeccion('seccionSpot');

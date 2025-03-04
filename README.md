@@ -2,6 +2,8 @@
 npm install
 Instalar la carpeta node_modules
 npm install firebase
+npm install cors
+
 //*
 
 # Descripción
