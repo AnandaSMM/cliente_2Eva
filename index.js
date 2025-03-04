@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+const admin = require("firebase-admin");
 
 const app = express();
 app.use(express.json());
@@ -27,7 +28,7 @@ app.get("/login", (req, res) => res.sendFile(path.join(__dirname, "public", "log
 app.get("/registro", (req, res) => res.sendFile(path.join(__dirname, "public", "registro.html")));
 app.get("/index", (req, res) => res.sendFile(path.join(__dirname, "public", "index.html")));
 
-// 🟢 **Endpoint para agregar ubicación**
+// **Endpoint para agregar ubicación**
 app.post("/agregar-Ubicacion", async (req, res) => {
   try {
     const { userId, nombre, lat, lng, comentario, tipo, grupo } = req.body;
