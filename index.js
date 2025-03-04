@@ -73,28 +73,76 @@ app.post("/agregar-Ubicacion", async (req, res) => {
   }
 });
 
-// eliminar una ubicación de la coleccion
 app.delete("/eliminar-Ubicacion/:usuario/:lat/:lng", async (req, res) => {
   try {
     const { usuario, lat, lng } = req.params;
 
-    const locationRef = db.collection("Usuario").doc(usuario).collection("sitiosPropios").doc(lat, lng);
-    const locationDoc = await locationRef.get();
-
-    if (!locationDoc.exists) {
-      return res.status(404).json({ error: "Ubicación no encontrada" });
-    }
-    
-    // Eliminar del array sitiosPropios
+    // Obtener la referencia al usuario
     const userRef = db.collection("Usuario").doc(usuario);
-    await userRef.update({
-      sitiosPropios: admin.firestore.FieldValue.arrayRemove(locationDoc.data()),
-    });
+    const userDoc = await userRef.get();
 
-    res.json({ success: true, message: "Ubicación eliminada" });
+    if (!userDoc.exists) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    let sitios = userDoc.data().sitiosPropios || [];
+
+    // Filtrar las ubicaciones para eliminar la que tiene la latitud y longitud dadas
+    const nuevosSitios = sitios.filter(sitio => 
+      sitio.lat !== parseFloat(lat) || sitio.lng !== parseFloat(lng)
+    );
+
+    // Actualizar Firestore con la nueva lista de ubicaciones
+    await userRef.update({ sitiosPropios: nuevosSitios });
+
+    res.json({ success: true, message: "Ubicación eliminada correctamente" });
   } catch (error) {
     console.error("Error al eliminar ubicación:", error);
     res.status(500).json({ error: "Error al eliminar la ubicación" });
+  }
+});
+
+// Editar una ubicación de la colección
+app.put("/editar-Ubicacion/:lat/:lng", async (req, res) => {
+  try {
+    const { lat, lng } = req.params;
+    const { nombre, comentario } = req.body;
+
+    // Validar si los datos necesarios están presentes
+    if (!nombre || !comentario) {
+      return res.status(400).json({ error: "Nombre y comentario son requeridos" });
+    }
+
+    const usuario = auth.currentUser;
+    // Obtener el documento del usuario
+    const userRef = db.collection("Usuario").doc(usuario);
+    const userDoc = await userRef.get();
+
+    if (!userDoc.exists) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    // Obtener los sitios del usuario
+    let sitios = userDoc.data().sitiosPropios || [];
+
+    // Buscar y actualizar la ubicación
+    let ubicacionIndex = sitios.findIndex(sitio => sitio.lat === parseFloat(lat) && sitio.lng === parseFloat(lng));
+
+    if (ubicacionIndex === -1) {
+      return res.status(404).json({ error: "Ubicación no encontrada" });
+    }
+
+    // Modificar el nombre y comentario
+    sitios[ubicacionIndex].nombre = nombre;
+    sitios[ubicacionIndex].comentario = comentario;
+
+    // Actualizar el documento del usuario con la lista de sitios actualizada
+    await userRef.update({ sitiosPropios: sitios });
+
+    res.json({ success: true, message: "Ubicación actualizada correctamente" });
+  } catch (error) {
+    console.error("Error al editar ubicación:", error);
+    res.status(500).json({ error: "Error al editar la ubicación" });
   }
 });
 

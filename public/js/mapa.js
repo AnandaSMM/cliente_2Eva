@@ -131,9 +131,9 @@ function cargarMapa1() {
             alert("Hubo un problema al obtener los datos. Inténtalo más tarde.");
         });
 };
-
 export async function cargarMapa2() {
     cargarGruposSelect();
+
     if (map && map.remove) {
         map.remove();
     }
@@ -151,18 +151,18 @@ export async function cargarMapa2() {
         return;
     }
 
-    navigator.geolocation.getCurrentPosition(
-        (position) => {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
+    // Mostrar ubicación del usuario
+    navigator.geolocation.getCurrentPosition((position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
 
-            map.setView([lat, lng], 15); // Centrar mapa en la ubicación
+        map.setView([lat, lng], 15); // Centrar mapa en la ubicación
 
-            L.marker([lat, lng])
-                .addTo(map)
-                .bindPopup("📍 Estás aquí")
-                .openPopup();
-        });
+        L.marker([lat, lng])
+            .addTo(map)
+            .bindPopup("📍 Estás aquí")
+            .openPopup();
+    });
 
     const user = auth.currentUser;
     if (!user) {
@@ -174,6 +174,16 @@ export async function cargarMapa2() {
         const userRef = doc(db, "Usuario", user.uid);
         const userDoc = await getDoc(userRef);
         let userId = user.uid;
+
+        if (userDoc.exists()) {
+            const data = userDoc.data();
+            if (data.sitiosPropios) {
+                data.sitiosPropios.forEach(sitio => {
+                    const { lat, lng, nombre, comentario } = sitio;
+                    agregarMarcadorMapa(lat, lng, nombre, comentario);
+                });
+            }
+        }
 
         map.on("click", function (e) {
             const { lat, lng } = e.latlng;
@@ -190,9 +200,7 @@ export async function cargarMapa2() {
             const nombre = document.getElementById("nombre").value;
             const comentario = document.getElementById("comentario").value;
             const tipo = document.getElementById("tipo").value;
-            const grupoId = document.getElementById("paraGrupos").value; // Obtener el grupo seleccionado
-
-            console.log(userId, lat, lng, nombre, tipo);
+            const grupoId = document.getElementById("paraGrupos").value;
 
             if (!userId || isNaN(lat) || isNaN(lng) || !nombre || !tipo) {
                 alert("Datos inválidos. Verifica los campos.");
@@ -200,8 +208,7 @@ export async function cargarMapa2() {
             }
 
             let bodyData = { userId, nombre, lat, lng, comentario, tipo };
-
-            if (grupoId && grupoId !== "Selecciona un grupo") { // Validar si se seleccionó un grupo válido
+            if (grupoId && grupoId !== "Selecciona un grupo") {
                 bodyData.grupo = grupoId;
             }
 
@@ -215,13 +222,7 @@ export async function cargarMapa2() {
                 const result = await response.json();
                 if (result.success) {
                     alert("Ubicación agregada con éxito!");
-                    L.marker([lat, lng])
-                        .addTo(map)
-                        .bindPopup(`<b id="nombre-${result.id}">${nombre}</b><br>
-                <span id="comentario-${result.id}">${comentario}</span><br>
-                <button onclick="editarUbicacion('${result.id}', ${lat}, ${lng})">✏ Editar</button>
-                <button onclick="eliminarUbicacion('${result.id}', ${lat}, ${lng})">🗑 Borrar</button>`)
-                        .openPopup();
+                    agregarMarcadorMapa(lat, lng, nombre, comentario);
                 } else {
                     alert("Error al agregar la ubicación.");
                 }
@@ -230,95 +231,155 @@ export async function cargarMapa2() {
             }
         });
 
-        // Eliminar ubicación
-        async function eliminarUbicacion(id, lat, lng) {
-            const usuario = auth.currentUser; // Reemplaza esto con la forma en que obtienes el usuario actual (ej. auth.currentUser.uid)
-
-            // Confirmación antes de eliminar
-            if (confirm("¿Estás seguro de que quieres eliminar esta ubicación?")) {
-                // Realizar la solicitud DELETE al backend
-                fetch(`http://localhost:3000/eliminar-Ubicacion/${usuario}/${lat}/${lng}`, {
-                    method: "DELETE",
-                    headers: { "Content-Type": "application/json" },
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        if (data.success) {
-                            alert("Ubicación eliminada correctamente");
-
-                            // Remover el marcador del mapa
-                            const marker = map.eachLayer(layer => {
-                                if (layer.getLatLng && layer.getLatLng().lat === lat && layer.getLatLng().lng === lng) {
-                                    map.removeLayer(layer);  // Elimina el marcador de Leaflet
-                                }
-                            });
-                        } else {
-                            alert(`Error: ${data.error}`);
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("Error al eliminar ubicación:", error);
-                        alert("Hubo un problema al eliminar la ubicación.");
-                    });
-            }
-        }
-
-
-        /*
-        if (!confirm("¿Seguro que quieres eliminar esta ubicación?")) return;
-            try {
-                const response = await fetch(`http://localhost:3000/eliminar-Ubicacion/${id}`, {
-                    method: "DELETE",
-                });
-
-                const result = await response.json();
-                if (result.success) {
-                    alert("Ubicación eliminada con éxito!");
-                    map.eachLayer((layer) => {
-                        if (layer instanceof L.Marker && layer.getLatLng().lat === lat && layer.getLatLng().lng === lng) {
-                            map.removeLayer(layer);
-                        }
-                    });
-                } else {
-                    alert("Error al eliminar la ubicación.");
-                }
-            } catch (error) {
-                console.error("Error al eliminar la ubicación: ", error);
-            }*/
-
-
-        // Editar ubicación
-        async function editarUbicacion(id, lat, lng) {
-            const nuevoNombre = prompt("Nuevo nombre del sitio:", document.getElementById(`nombre-${id}`).innerText);
-            const nuevoComentario = prompt("Nuevo comentario:", document.getElementById(`comentario-${id}`).innerText);
-
-            if (!nuevoNombre || !nuevoComentario) return alert("No puedes dejar campos vacíos.");
-
-            try {
-                const response = await fetch(`http://localhost:3000/editar-Ubicacion/${id}`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ nombre: nuevoNombre, comentario: nuevoComentario }),
-                });
-
-                const result = await response.json();
-                if (result.success) {
-                    alert("Ubicación actualizada!");
-                    document.getElementById(`nombre-${id}`).innerText = nuevoNombre;
-                    document.getElementById(`comentario-${id}`).innerText = nuevoComentario;
-                } else {
-                    alert("Error al actualizar la ubicación.");
-                }
-            } catch (error) {
-                console.error("Error al actualizar la ubicación: ", error);
-            }
-        }
-
     } catch (error) {
-        console.error("Error al cargar usuario:", error);
-        alert("Error al cargar usuario.");
+        console.error("Error al cargar datos del usuario:", error);
+    }
+}
+
+// Función para agregar un marcador con eventos de edición/eliminación
+function agregarMarcadorMapa(lat, lng, nombre, comentario) {
+    const marker = L.marker([lat, lng])
+        .addTo(map)
+        .bindPopup(`
+            <b id="nombre-${lat}-${lng}">${nombre}</b><br>
+            <span id="comentario-${lat}-${lng}">${comentario}</span><br>
+            <button id="editar-${lat}-${lng}">✏ Editar</button>
+            <button id="eliminar-${lat}-${lng}">🗑 Borrar</button>
+        `);
+
+    marker.on('popupopen', () => {
+        setTimeout(() => {
+            const editarButton = document.getElementById(`editar-${lat}-${lng}`);
+            const eliminarButton = document.getElementById(`eliminar-${lat}-${lng}`);
+
+            if (editarButton) {
+                editarButton.addEventListener("click", () => editarUbicacion(lat, lng));
+            }
+            if (eliminarButton) {
+                eliminarButton.addEventListener("click", () => eliminarUbicacion(lat, lng));
+            }
+        }, 100);
+    });
+}
+
+// Función para eliminar una ubicación
+async function eliminarUbicacion(lat, lng) {
+    const usuario = auth.currentUser;
+    if (!usuario) {
+        alert("No estás autenticado.");
+        return;
     }
 
+    if (confirm("¿Estás seguro de que quieres eliminar esta ubicación?")) {
+        try {
+            const response = await fetch(`http://localhost:3000/eliminar-Ubicacion/${usuario.uid}/${lat}/${lng}`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                alert("Ubicación eliminada correctamente");
+
+                // Remover el marcador del mapa
+                map.eachLayer(layer => {
+                    if (layer instanceof L.Marker) {
+                        const markerLatLng = layer.getLatLng();
+                        if (markerLatLng.lat === lat && markerLatLng.lng === lng) {
+                            map.removeLayer(layer);
+                        }
+                    }
+                });
+            } else {
+                alert(`Error: ${data.error}`);
+            }
+        } catch (error) {
+            console.error("Error al eliminar ubicación:", error);
+            alert("Hubo un problema al eliminar la ubicación.");
+        }
+    }
+}
+
+
+// Función para manejar el clic en el botón de editar
+function editarUbicacion(lat, lng) {
+    // Obtener los valores actuales del marcador
+    const nombre = document.getElementById(`nombre-${lat}-${lng}`).textContent;
+    const comentario = document.getElementById(`comentario-${lat}-${lng}`).textContent;
+
+    // Rellenar los campos del formulario con los valores actuales
+    document.getElementById("nuevoNombre").value = nombre;
+    document.getElementById("nuevoComentario").value = comentario;
+
+    // Mostrar el formulario de edición
+    mostrarFormularioEdicion();
+
+    // Guardar el lat y lng en el formulario para enviarlos al backend
+    document.getElementById("latEdit").value = lat;
+    document.getElementById("lngEdit").value = lng;
+
+    // Manejar el submit del formulario de edición
+    document.getElementById("formularioEditarSitio").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const nuevoNombre = document.getElementById("nuevoNombre").value;
+        const nuevoComentario = document.getElementById("nuevoComentario").value;
+
+        if (!nuevoNombre || !nuevoComentario) {
+            alert("Debes completar todos los campos.");
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:3000/editar-Ubicacion/${lat}/${lng}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    nombre: nuevoNombre,
+                    comentario: nuevoComentario,
+                }),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                // Actualizar el marcador en el mapa
+                actualizarMarcador(lat, lng, nuevoNombre, nuevoComentario);
+
+                alert("Ubicación actualizada correctamente.");
+                ocultarFormularioEdicion();
+            } else {
+                alert("Error al actualizar la ubicación.");
+            }
+        } catch (error) {
+            console.error("Error al editar la ubicación: ", error);
+            alert("Hubo un error al actualizar la ubicación.");
+        }
+    });
+}
+
+// Función para actualizar el marcador en el mapa
+function actualizarMarcador(lat, lng, nuevoNombre, nuevoComentario) {
+    // Buscar el marcador en el mapa y actualizar su contenido
+    map.eachLayer(layer => {
+        if (layer.getLatLng && layer.getLatLng().lat === lat && layer.getLatLng().lng === lng) {
+            layer.bindPopup(`
+                <b id="nombre-${lat}-${lng}">${nuevoNombre}</b><br>
+                <span id="comentario-${lat}-${lng}">${nuevoComentario}</span><br>
+                <button id="editar-${lat}-${lng}">✏ Editar</button>
+                <button id="eliminar-${lat}-${lng}">🗑 Borrar</button>
+            `).openPopup();
+        }
+    });
+}
+
+// Funciones para mostrar/ocultar el formulario de edición
+function mostrarFormularioEdicion() {
+    document.getElementById("formularioEdicionContainer").style.display = "block";
+}
+
+function ocultarFormularioEdicion() {
+    document.getElementById("formularioEdicionContainer").style.display = "none";
 }
 
 ///mostrar los mapas: general y personal

@@ -84,13 +84,24 @@
                         <select id="paraGrupos">
                             <option enabled>Grupos</option>
                         </select><br>
-                        Si no agrega a ningun grupo se agregara a tu mapa personal
-                        <input type="submit" value="Crear">
+                        Si no agrega a ningun grupo se agregara a tus favoritos
+                        <input type="submit" value="Crear" id="botonCrear">
                     </form>
                 </div>
             </aside>
         </div>
     </div>
+    <div id="formularioEdicionContainer" style="display:none;">
+        <h3>Editar Ubicación</h3>
+        <form id="formularioEditarSitio">
+            <input type="text" id="nuevoNombre" placeholder="Nuevo nombre" required>
+            <textarea id="nuevoComentario" placeholder="Nuevo comentario" required></textarea>
+            <input type="hidden" id="latEdit">
+            <input type="hidden" id="lngEdit">
+            <button type="submit">Actualizar</button>
+        </form>
+    </div>
+    
 
     <!-- Incluir Firebase -->
     <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>

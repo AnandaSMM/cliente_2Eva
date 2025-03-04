@@ -84,8 +84,8 @@ aside {
   -1px 1px 5px #858d96;
 }
 
-#formularioNuevoSitio{
- 
+#botonCrear{
+  cursor: pointer;
 }
 
 footer{
