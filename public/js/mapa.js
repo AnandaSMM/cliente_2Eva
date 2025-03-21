@@ -386,12 +386,10 @@ function ocultarFormularioEdicion() {
 cargarMapa1();
 
 document.getElementById("personal").addEventListener("click", () => {
-    document.querySelector("#encabezado h2").textContent = "Mi Mapa Personalizado";
     cargarMapa2();
 });
 
 document.getElementById("general").addEventListener("click", () => {
-    document.querySelector("#encabezado h2").textContent = "Mapa General de Lugares Turísticos y Restaurantes";
     mostrarNotificacion("Los datos se cargarán en breve", ". . .");
     cargarMapa1();
 });

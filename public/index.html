@@ -15,104 +15,103 @@
     <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
     <link rel="stylesheet" href="./styles/mapaStylesheet.css" />
     <link rel="stylesheet" href="./styles/aside.css" />
-
+    <link href='https://fonts.googleapis.com/css?family=Alice' rel='stylesheet'>
 </head>
 
 <body>
     <div class="container">
-        <div id="encabezado">
-            <h2>Mapa General de Lugares Turísticos y Restaurantes</h2>
-            <h3>Hola <span id="nombreUsuario">Cargando...</span></h3>
+        <div id="uno">
+            <div id="barraBusqueda">
+                <input type="text" id="busqueda" placeholder="Busqueda"><img src="./img/mensaje.PNG" id="mensaje">
+            </div>
             <div class="botonesMapa">
-                <button id="general" class="boton">Mapa general</button>
-                <button id="personal" class="boton">Mi mapa</button>
+                <button id="general"><img src="./img/mundo.PNG" id="mundo"> General</button>
+                <button id="personal"><img src="./img/corazon.PNG" id="corazon"> Mis sitios</button>
+                <!--<button id="personal"><img src="./img/grupo.PNG" id="personas"></button>!-->
+                <button id="crearSpot" class="boton"><img src="./img/mas.PNG" id="mas"> Spot</button>
+                <button id="amigos" class="boton"><img src="./img/mas.PNG" id="mas"> Amigos</button>
+                <button id="grupos" class="boton"><img src="./img/mas.PNG" id="mas"> Grupos</button>
+                <button id="logout" class="boton">Cerrar Sesión</button>
             </div>
         </div>
-        <div id="contenido">
-            <div id="map"></div>
-            <aside>
-                <div class="botones">
-                    <button id="crearSpot" class="boton">Crear spot</button>
-                    <button id="amigos" class="boton">Amigos</button>
-                    <button id="grupos" class="boton">Grupos</button>
-                    <!-- <button id="agregarGrupo" class="boton">Ver grupo</button> -->
+        <div id="map"></div>
+        <aside id="aside" style="display:none;">
+           
+            <div id="tituloNombre">
+                <img src="./img/logo.PNG" id="logo">
+                <h3> Bienvenida <span id="nombreUsuario">Cargando...</span></h3>
+            </div>
+            <!-- Sección de Amigos -->
+            <div id="seccionAmigos" class="seccion">
+                <div>
+                    <h2>Agregar amigos</h2>
+                    <input type="text" id="friendName" placeholder="Nombre del amigo">
+                </div>
+                <button id="addFriendButton">Agregar</button>
+                <div id="listaAmigos">
+                    <h2>Mis amigos</h2>
+                    <ul id="friendsList" type="square"></ul>
+                </div>
+            </div>
+
+            <!-- Sección de Grupos -->
+            <div id="seccionGrupos" class="seccion">
+                <div id="listaGrupo">
+                    <h2>Mis grupos</h2>
+                    <ul type="square" id="groupsList"></ul>
                 </div>
 
-                <!-- Sección de Amigos -->
-                <div id="seccionAmigos" class="seccion">
-                    <div>
-                        <h2></h2>
-                        <input type="text" id="friendName" placeholder="Nombre del amigo">
-                        <button id="addFriendButton">Agregar</button>
-                    </div>
-                    <div>
-                        <h2>Mis amigos</h2>
-                        <ul id="friendsList"></ul>
-                    </div>
-                    
+                <div id="formGroup">
+                    <h2>Crear grupo</h2>
+                    <input type="text" id="groupName" placeholder="Nombre del grupo">
+                    <ul id="friendsListGrupos"></ul>
+                    <button id="crearGrupoBoton">Crear Grupo</button>
                 </div>
+            </div>
 
-                <!-- Sección de Grupos -->
-                <div id="seccionGrupos" class="seccion">
-                    <div>
-                        <h2>Mis grupos</h2>
-                        <ul id="groupsList"></ul>
-                    </div>
-
-                    <div>
-                        <h2>Crear grupo</h2>
-                        <input type="text" id="groupName" placeholder="Nombre del grupo">
-                        <ul id="friendsListGrupos"></ul>
-                        <button id="crearGrupoBoton">Crear Grupo</button>
-                    </div>
-                </div>
-
-                <!-- Sección de Crear Spot -->
-                <div id="seccionSpot" class="seccion">
-                    <h2>Crear un Nuevo Spot</h2>
-                    <form id="formularioNuevoSitio">
-                        <input type="text" id="nombre" placeholder="Nombre del sitio">
-                        <input type="text" id="comentario" placeholder="Comentario">
-                        <input type="hidden" id="lat"> 
-                        <input type="hidden" id="long"> 
-                        <select id="tipo">
-                            <option enabled>Tipo</option>
-                            <option>Restauración</option>
-                            <option>Ocio</option>
-                        </select>
-                        <p>Agregar ubicación a uno de tus grupos</p>
+            <!-- Sección de Crear Spot -->
+            <div id="seccionSpot" class="seccion">
+                <h3>Crear Spot en favoritos</h3>
+                <form id="formularioNuevoSitio">
+                    <input type="text" id="nombre" placeholder="Nombre del sitio" class="crearSpotInput">
+                    <input type="text" id="comentario" placeholder="Comentario" class="crearSpotInput">
+                    <input type="hidden" id="lat">
+                    <input type="hidden" id="long">
+                    <select id="tipo">
+                        <option enabled>Tipo</option>
+                        <option>Restauración</option>
+                        <option>Ocio</option>
+                    </select>
+                    <p> Agregar a grupo </br> </br>
                         <select id="paraGrupos">
                             <option enabled>Grupos</option>
-                        </select><br>
-                        Si no agrega a ningun grupo se agregara a tus favoritos
-                        <input type="submit" value="Crear" id="botonCrear">
-                    </form>
-                </div>
-            </aside>
-        </div>
+                        </select>
+                    </p>
+                    <input type="submit" value="Crear" id="botonCrear">
+                </form>
+            </div>
+            <img src="./img/flecha.PNG" id="flecha">
+            <div id="formularioEdicionContainer" style="display:none;">
+                <h3>Editar Ubicación</h3>
+                <form id="formularioEditarSitio">
+                    <input type="text" id="nuevoNombre" placeholder="Nuevo nombre" required>
+                    <textarea id="nuevoComentario" placeholder="Nuevo comentario" required></textarea>
+                    <input type="hidden" id="latEdit">
+                    <input type="hidden" id="lngEdit">
+                    <button type="submit">Actualizar</button>
+                </form>
+            </div>
+        </aside>
     </div>
-    <div id="formularioEdicionContainer" style="display:none;">
-        <h3>Editar Ubicación</h3>
-        <form id="formularioEditarSitio">
-            <input type="text" id="nuevoNombre" placeholder="Nuevo nombre" required>
-            <textarea id="nuevoComentario" placeholder="Nuevo comentario" required></textarea>
-            <input type="hidden" id="latEdit">
-            <input type="hidden" id="lngEdit">
-            <button type="submit">Actualizar</button>
-        </form>
-    </div>
-    
 
-    <!-- Incluir Firebase -->
-    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
-    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
-    <script type="module" src="js/mapa.js"></script>
-    <script type="module" src="js/aside.js"></script>
-    <script type="module" src="js/amigos.js"></script>
-    <script type="module" src="js/grupos.js"></script>
+        <!-- Incluir Firebase -->
+        <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+        <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+        <script type="module" src="js/mapa.js"></script>
+        <script type="module" src="js/aside.js"></script>
+        <script type="module" src="js/amigos.js"></script>
+        <script type="module" src="js/grupos.js"></script>
 </body>
-<footer>
-    <button id="logout" class="boton">Cerrar Sesión</button>
-</footer>
+
 
 </html>

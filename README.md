@@ -14,7 +14,7 @@ Además, contará con una funcionalidad similar a Google Maps, proporcionando un
 ## Funcionalidades
 - Iniciar sesión [✔️]
 - Registrarse [✔️]
-- CRUD []
+- CRUD [✔️]
 - Notificaciones []
 - Cookies [✔️]
 - Llamadas AJAX con Fetch [✔️]
