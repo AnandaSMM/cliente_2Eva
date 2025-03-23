@@ -14,11 +14,13 @@ Además, contará con una funcionalidad similar a Google Maps, proporcionando un
 ## Funcionalidades
 - Iniciar sesión [✔️]
 - Registrarse [✔️]
-- CRUD [✔️]
+- CRUD de ubicaciones [✔️]
 - Notificaciones []
 - Cookies [✔️]
 - Llamadas AJAX con Fetch [✔️]
 - API REST [✔️]
+- Mensaje al ser agregado como amigo o a un grupo []
+- barra de busqueda de las ubicaciones []
 
 ## Tecnologías
 - Javascript
@@ -39,7 +41,6 @@ Además, contará con una funcionalidad similar a Google Maps, proporcionando un
 - Inicio (Mapa customeable y mapa general)
 - login
 - registro
-- Configuracón de usuario (cambiar avatar)
   
 ## imagen guia
 https://learn.microsoft.com/es-es/azure/architecture/data-guide/big-data/images/document.png
